@@ -9,12 +9,16 @@ function CheckoutForm({ title, price }) {
   const [isPaying, setIsPaying] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setErrorMessage("");
     try {
       setIsPaying(true);
       if (elements == null) {
+        setIsLoading(false);
         return;
       }
 
@@ -22,6 +26,7 @@ function CheckoutForm({ title, price }) {
 
       if (submitError) {
         setErrorMessage(submitError.message);
+        setIsLoading(false);
         return;
       }
 
@@ -48,11 +53,14 @@ function CheckoutForm({ title, price }) {
 
       if (stripeResponse.error) {
         setErrorMessage(stripeResponse.error.message);
+        setIsLoading(false);
+        return;
       }
       console.log(stripeResponse);
 
       if (stripeResponse.paymentIntent.status === "succeeded") {
         setSuccess(true);
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -61,7 +69,7 @@ function CheckoutForm({ title, price }) {
   };
 
   return success ? (
-    <p>Merci pour votre achat !</p>
+    <p className="success">Merci pour votre achat ! 🚀</p>
   ) : (
     <form onSubmit={handleSubmit}>
       <PaymentElement />
