@@ -12,7 +12,9 @@ const Home = ({ data }) => {
 
       <div className="text-block">
         <span>Prêts à faire du tri dans vos placards ?</span>
-        <button>Commencez à vendre</button>
+        <Link to="/signup">
+          <button>Commencez à vendre</button>
+        </Link>
       </div>
       {/* <Link to="/offer">Aller sur la page offer</Link> */}
 
